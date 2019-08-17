@@ -9,6 +9,14 @@ const formatTime = date => {
   return [month, day].map(formatNumber).join('/') + ' ' + [hour, minute].map(formatNumber).join(':')
 }
 
+const prettyTime = date => {
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  return month + '月' + day + '日 ' + [hour, minute].map(formatNumber).join(':')
+}
+
 const minute = 1000 * 60;
 const hour = minute * 60;
 const day = hour * 24;
@@ -120,27 +128,6 @@ function hashtag(text) {
   return null
 }
 
-// "123 #456# 789" => {{text:'123'}, {tag:true, text:'#456#'}, {text:'789'}}
-function decorateText(text) {
-  var styled = []
-  var tags = hashtag(text)
-
-  if (tags && tags.length > 0) {
-    for (var i = 0; i < tags.length; i++) {
-      var array = text.split(tags[i])
-      if (array[0]) {
-        styled.push({ tag: false, text: array[0] })
-      }
-      styled.push({ tag: true, text: tags[i] })
-      text = array[1]
-    }
-  }
-  if (text) {
-    styled.push({ tag: false, text: text})
-  }
-  return styled
-}
-
 // Test white space
 // Instead of checking the entire string to see if there's only whitespace, 
 // just check to see if there's at least one character of non whitespace:
@@ -242,6 +229,7 @@ module.exports = {
   formatTime: formatTime,
   agoTime: agoTime,
   msgTime: msgTime,
+  prettyTime: prettyTime,
   getDaysFromNow: getDaysFromNow,
   setResult: setResult,
   sendRequest: setTransitData,
@@ -249,7 +237,6 @@ module.exports = {
   jwtDecode: jwtDecode,
   jwtExpire: jwtExpire,
   hashtag: hashtag,
-  decorateText: decorateText,
   isWhiteSpace: isWhiteSpace,
   jsonParse: jsonParse,
   getCityName: getCityName,

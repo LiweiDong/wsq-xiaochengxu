@@ -374,12 +374,15 @@ function decoratePosts(posts) {
 }
 
 function decoratePost(post) {
-  post.styled = util.decorateText(post.content)
   var utcTime = post.created_at * 1000
   post.time = util.formatTime(new Date(utcTime))
   post.agoTime = util.agoTime(utcTime)
   if (post.media) {
-    post.images = JSON.parse(post.media.path)
+    if (post.media.type == 1) {
+      post.images = JSON.parse(post.media.path)
+    } else if (post.media.type == 3) {
+      post.video = JSON.parse(post.media.path)
+    }
   }
   if (post.location) {
     try {
@@ -429,7 +432,8 @@ function onClickShare(res) {
   var meta = app.globalData.meta
   return {
     title: meta.app_name,
-    path: '/pages/login/login?q=home'
+    path: '/pages/login/login?q=home',
+    imageUrl: meta.app_shareimg,
   }
 }
 

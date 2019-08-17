@@ -6,6 +6,8 @@
     "img-grid": "../tmpl/img-grid/img-grid",
     "location": "../tmpl/location/location",
     "loading": "../tmpl/loading/loading",
-    "kw-input": "../tmpl/input/kw-input"
+    "kw-input": "../tmpl/input/kw-input",
+    "kw-text": "../tmpl/text/kw-text",
+    "kw-video": "../tmpl/video/kw-video"
   }
 }

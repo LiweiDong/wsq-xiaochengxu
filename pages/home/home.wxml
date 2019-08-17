@@ -103,8 +103,7 @@
       <view>
         <!-- Text -->
         <view>
-          <text wx:for="{{item.styled}}" wx:for-item="text" wx:key="{{index}}"
-            class="{{text.tag?'highlight':''}}">{{text.text}} </text>
+          <kw-text text="{{item.content}}" limit="{{70}}" ></kw-text>
         </view>
 
         <!-- Image列表 -->
@@ -112,6 +111,11 @@
           <view style='margin: 8rpx 0rpx'>
             <img-grid images="{{item.images}}"> </img-grid> 
           </view>
+        </block>
+
+        <!-- 视频 -->
+        <block wx:if="{{item.video}}">
+          <kw-video video="{{item.video}}" />
         </block>
         
         <!-- 地理位置 -->

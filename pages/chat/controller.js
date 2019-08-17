@@ -36,6 +36,12 @@ function initData(uid) {
 
 // 发送消息
 function onSendMessage(e) {
+  if (util.isWhiteSpace(e.detail.value)) {
+    wx.showToast({
+      title: '发送内容不能为空', icon: 'none'
+    })
+    return
+  }
   var from_id = app.globalData.userInfo.id
   var to_id = view.data.other.id
   var data = {
@@ -51,9 +57,9 @@ function onSendMessage(e) {
 function sendMessage(data) {
   api.createChatMessage(data).then( resp => {
     console.log("get resp:" + data, resp)
-    var items = massage1(resp.data)
-    console.log(items)
-    view.appendMessage(items)
+    var item = massage1(resp.data)
+    console.log(item)
+    view.appendMessage(item)
   }).catch( err => {
     console.log(err)
     wx.showToast({ title: '发送失败:'+err.code, icon: 'fail' })
@@ -88,16 +94,6 @@ function deltaAppend(data) {
   return array
 }
 
-function massage(items) {
-  items.map( item => {
-    massage1(item)
-  })
-  items.sort((a, b ) => {
-    return a.created_at > b.created_at
-  })
-  return items
-}
-
 // 下拉刷新
 function onPullDown() {
   var loader = view.data.loader
@@ -127,11 +123,21 @@ function onPullDown() {
   })
 }
 
+function massage(items) {
+  items.map(item => {
+    massage1(item)
+  })
+  items.sort((a, b) => {
+    return a.created_at > b.created_at
+  })
+  return items
+}
+
 function massage1(item) {
   var user = app.globalData.userInfo
   var other = view.data.other
   var utcTime = item.created_at * 1000
-  item.time = util.formatTime(new Date(utcTime))
+  item.time = util.prettyTime(new Date(utcTime))
   item.showTime = false
   item.isMy = item.from_id == user.id
   if (item.isMy) {
